@@ -1,0 +1,206 @@
+<html>
+    <head>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    
+    <style>
+        .row_delete button{
+            width: 100px;
+            margin-left: 10px;
+        }    
+        .row_delete input{
+            width: 100px;
+        }
+        #btn_add{
+
+            margin-top: 30px;
+        }    
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-md-10">
+                <div class="row justify-content-center" id="row">
+                    <button type="button" class="btn btn-primary pull-right" id="btn_add" data-toggle="modal" data-target="#addModal">Add</button>
+                    
+                </div>
+                <br/>    
+                <table class='table table-striped' id="mytable">
+                    <thead>
+                        <tr>
+                            <th style="display: none;">id</th>
+                            <th>Cashier</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(function(user){ %>
+                            <tr>
+                                <td style="display: none;"><%= user.id %></td>
+                                <td><%= user.cashier %></td>
+                                <td><%= user.product %></td>
+                                <td><%= user.category %></td>
+                                <td><%= user.price %></td>
+                                <td>
+                                    <a href="#"   name="edit" value="Edit" id="edit_data" class="fa fa-edit edit_data text-success actions"  data-toggle="modal" data-target="#editModal" data-id="<%= user.id %>" data-cashier="<%= user.cashier %>" data-product="<%= user.product %>" data-price="<%= user.price %>" data-category="<%= user.category %>"></a>
+                                    <a href="#"  class = "fa fa-trash text-danger actions delete_data" id="delete_row" data-toggle="modal" data-target="#deleteModal" data-id="<%= user.id %>"></a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <!--Add Modal-->
+            <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/add" method="post"  autocomplete="off">
+                        <div class="form-group">
+                            <select class="form-control" name="add_cashier" id="add_cashier">
+                              <option>Cashier ..</option>
+                              <option>Pevita Pearce</option>
+                              <option>Raisa Andriana</option>
+                              <option>Joko Purwadhi</option>
+                              <option>Fitra Elbi Amrullah</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="add_category" id="add_category">
+                              <option>Category ..</option>
+                              <option>Food</option>
+                              <option>Drink</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="add_product" id="add_product" placeholder="Product ...">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="add_price" id="add_price" placeholder="Price ...">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" id="submit" name="Submit" >
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+            </div>
+            <!--Edit Modal-->
+          <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/update" method="post"   autocomplete="off">
+                        <input type="hidden" id="edit_id"  name ="edit_id">
+                        <div class="form-group">
+                            <select class="form-control" name="edit_cashier" id="edit_cashier">
+                            <option>Cashier ..</option>
+                            <option>Pevita Pearce</option>
+                            <option>Raisa Andriana</option>
+                            <option>Joko Purwadhi</option>
+                            <option>Fitra Elbi Amrullah</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="edit_category" id="edit_category">
+                            <option>Category ..</option>
+                            <option>Food</option>
+                            <option>Drink</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="edit_product"  id="edit_product" placeholder="Product ...">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="edit_price"  id="edit_price" placeholder="Price ...">
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-primary " type="submit" name="Update">
+                        </div>
+                   </form>
+            
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+            <!--Delete Modal-->
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/delete" method="post"   autocomplete="off">
+                        <input type="hidden" id="delete_id"  name ="delete_id">
+                        <div class="form-group">
+                            <h5>Apakah anda yakin ingin menghapus data ini ?</h5>
+                        </div>
+                        <div class="form-group">
+                            <div class="row row_delete justify-content-center">
+                                <input class="btn btn-success" type="submit" name="Ya">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Tidak</button>
+                            </div>
+                            
+                        </div>
+                   </form>
+            
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+ 
+    <script>
+        $(document).ready(function(){
+    //showing data to edit modal      
+    $('#mytable').on('click','.edit_data',function(){
+        var product_id = $(this).data('id');
+        var product_name = $(this).data('product');
+        var product_price = $(this).data('price');
+        var product_cashier = $(this).data('cashier');
+        var product_category = $(this).data('category');
+        
+        $('#edit_id').val(product_id);
+        $('#edit_cashier').val(product_cashier);
+        $('#edit_category').val(product_category);
+        $('#edit_product').val(product_name);
+        $('#edit_price').val(product_price);
+    });
+    $('#mytable').on('click','.delete_data',function(){
+        var delete_id = $(this).data('id');
+        $('#delete_id').val(delete_id);
+    });
+   
+});
+    </script>    
+    </body>
+</html>
